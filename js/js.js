@@ -1,5 +1,6 @@
-let exportBest = {};
 
+let exportBest = {};
+let nnShape = [4, 10, 10, 3]
 class Game {
     constructor(eggs, training, generation, trainTotalGenerations, best) {
         
@@ -24,7 +25,7 @@ class Game {
         this.jumpers = [];
         //this.initiateJumpers(pretrainedJumpers);
         this.crashedJumpers = [];
-        this.numOfJumpers = 500;
+        this.numOfJumpers = 5000;
         this.gameOver = false;
         this.drewLast = false;
         this.fps = 200;
@@ -97,42 +98,18 @@ class Game {
         for (let egg of mutated_10) {
             this.jumpers.push(new Player(pid++, 400, egg ))
         }
-
-        //TODO: fix crossover
-        // for (let egg of bred) {
-        //     this.jumpers.push(new Player(pid++, 500, egg ))
-        // }
     }
 
     addRandomJumpers() {
        
-        //for (var i = 0; i < this.numOfJumpers; i++) {
         for (var i = 0; i < this.numOfJumpers; i++) {
             this.jumpers.push(new Player(i, 50 + (i * 50) % 500 ));
         }
-
-        // for (var i = 3; i < this.numOfJumpers; i++) {
-        //     this.jumpers.push(new Player(i, 50, 50, 250 + i * 2));
-        //     if (this.evolvedBrains && this.evolvedBrains[i]) {
-        //         var color = this.evolvedBrains[i].parents == 1 ? "cyan" : "red"
-
-        //         this.jumpers[i].parentIndex = this.evolvedBrains[i].parentIndex
-
-        //         this.jumpers[i].color = color;
-        //         this.jumpers[i].brain = this.evolvedBrains[i].brain;
-        //         if (color == "red") console.log("BLACKBOX GOT IN")
-        //     }
-        // }
-
     }
 
     initiateStars() {
         //var star = new Star(0, this.sceneWidth*4);
         var star;
-
-        //star = new Star(0, 1000, 0.1);
-        //this.stars.push(star);
-
 
         star = new Star(0, 2600, 2);
         this.stars.push(star);
@@ -181,6 +158,7 @@ class Game {
         this.stars.push(star);
 
         star = new Star(15, 9500, 0.1);
+        star.posY = 0;
         this.stars.push(star);
 
         star = new Star(16, 10100, 0.1);
@@ -193,80 +171,42 @@ class Game {
         
         this.stars.push(new Star(19, 11300, 2));
 
+        this.stars.push(new Star(20, 11800, 2));
+
     }
 
     addInitialObstacles() {
         //first obstacle is floating
-        var obsFloating = new Obstacle(1600, this.numberOfObstacles++);
-        obsFloating.posY = 75;
-        this.obstacles.push(obsFloating);
+        //var obsFloating = new ;
+        
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 1600, 75));
 
-        obsFloating = new Obstacle(2200, this.numberOfObstacles++);
-        obsFloating.posY = 0;
-        this.obstacles.push(obsFloating);
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 2200, 0));
 
-        //second obstacle is landed
-        var obsLand = new Obstacle(3000, this.numberOfObstacles++);
-        obsLand.posY = 0;
-        this.obstacles.push(obsLand);
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 3000, 0));
 
-        var obsLand = new Obstacle(4000, this.numberOfObstacles++);
-        obsLand.posY = 0;
-        this.obstacles.push(obsLand);
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 4000, 0));
 
-        var obsLand = new Obstacle(5100, this.numberOfObstacles++);
-        obsLand.posY = 0;
-        this.obstacles.push(obsLand);
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 5100, 0));
 
-        var obsLand = new Obstacle(5600, this.numberOfObstacles++);
-        obsLand.posY = 0;
-        this.obstacles.push(obsLand);
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 5600, 0));
 
-        var obsLand = new Obstacle(7000, this.numberOfObstacles++);
-        obsLand.posY = 75;
-        this.obstacles.push(obsLand);
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 7000, 75));
 
-        var obsLand = new Obstacle(7700, this.numberOfObstacles++);
-        obsLand.posY = 75;
-        this.obstacles.push(obsLand);
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 7700, 75));
 
-        var obsLand = new Obstacle(8700, this.numberOfObstacles++);
-        obsLand.posY = 0;
-        this.obstacles.push(obsLand);
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 8700, 0));
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 9700, 0));
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 10100, 75));
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 10400, 75));
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 10900, 75));
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 11405, 75));
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 11900, 75));
+        this.obstacles.push(new Obstacle(this.numberOfObstacles++, 12400, 100));
 
-        var obsLand = new Obstacle(9700, this.numberOfObstacles++);
-        obsLand.posY = 0;
-        this.obstacles.push(obsLand);
+      
 
-        var obsLand = new Obstacle(10100, this.numberOfObstacles++);
-        obsLand.posY = 75;
-        this.obstacles.push(obsLand);
-
-        var obsLand = new Obstacle(10400, this.numberOfObstacles++);
-        obsLand.posY = 75;
-        this.obstacles.push(obsLand);
-
-        var obsLand = new Obstacle(10900, this.numberOfObstacles++);
-        obsLand.posY = 75;
-        this.obstacles.push(obsLand);
-
-        var obsLand = new Obstacle(11400, this.numberOfObstacles++);
-        obsLand.posY = 75;
-        this.obstacles.push(obsLand);
-
-
-        //14
-        var obsLand = new Obstacle(11890, this.numberOfObstacles++);
-        obsLand.posY = 100;
-        this.obstacles.push(obsLand);
-
-        this.stars.push(new Star(20, 11700, 2));
-
-        //the hard one to get
-        this.stars.push(new Star(21, 11970, 2));
-
-
-
+///////////////////////// this.obstacles.push(new Obstacle(this.numberOfObstacles++, 12400, xxxxxxx));
 
 
 
@@ -275,33 +215,38 @@ class Game {
     addNewObstacles(numOfObsToAdd) {
         for (let i = 0; i < numOfObsToAdd; i++) {
             let position = this.obstacles[this.obstacles.length - 1].posX + this.getRandomObstacleDistance();
-            let obs = new Obstacle(position, this.numberOfObstacles++);
-            this.obstacles.push(obs);
+            let obs = new Obstacle(this.numberOfObstacles++, position, 0);
+            //this.obstacles.push(obs);
         }
 
         //LAST OBSTACLE
-        var last = this.obstacles[this.obstacles.length - 1];
-        //last.index = "END";
-        last.posY = 0;
-        last.height = 200;
-        last.posX += 500;
+        // var last = this.obstacles[this.obstacles.length - 1];
+        // //last.index = "END";
+        // last.posY = 0;
+        // last.height = 200;
+        // last.posX += 500;
     }
 
     getRandomObstacleDistance() {
         return Math.floor(Math.random() * this.obstacleDistanceDev) + this.obstacleDistanceMin;
     }
 
-    start() {
+    start(moveRounds) {
         this.gameOver = false;
-        this.move()
-        this.draw();
-        if (!this.training) this.intervalId = setInterval(this.play.bind(this), 10);
+        
+        for (let i = 0; i < moveRounds; i++) {
+           if (this.gameOver == false) this.move();
+        }
 
+        this.move();
+        this.draw();
+        this.intervalId = setInterval(this.play.bind(this), 10);
+        
     }
 
     play() {
         if (this.gameOver) {
-            console.log("play, ", this.gameOver)
+            //console.log("play, ", this.gameOver)
             if (this.drewLast) {
                 this.move();
                 this.drewLast = true;
@@ -316,24 +261,23 @@ class Game {
 
         let html = "";
 
-
-
         //DRAW ALL JUMPERS;
         for (let jumper of this.jumpers) html += jumper.generateHTML();
        
-       
         this.obstacles.map((o, i) => {
-            html += `<div class="obstacle" style="left:${o.posX}px;bottom:${o.posY}px"><h1>${o.index}</h1></div>`;
+            if (o.posX < 1800) {
+                html += o.generateHTML()
+            } //else {break};
+
         })
 
-        for (let star of this.stars) {
-            html += star.generateHTML();
+        for (let s of this.stars) {
+            if (s.posX < 1800) { html += s.generateHTML() }
+            //else {break};
         }
 
 
         html += this.generateDataDiv();
-
-
 
         //document.getElementById("game").innerHTML = "";
         document.getElementById("game").innerHTML = html;
@@ -368,17 +312,33 @@ class Game {
 
     move() {
 
-        if (this.obstacles.length == 1) this.endGame()
+        if ( !this.jumpers.length || ( !this.obstacles.length && !this.stars.length ) )  this.endGame()
+        
+        for (let i = this.obstacles.length-1; i >= 0; i--) {
+                
+            this.obstacles[i].posX -= this.moveSpeed;
+            if (this.obstacles[i].posX < -this.obstacles[i].width) {
+                this.obstacles.shift(i,1);
+            } 
+        }
+
+        for (let i = this.stars.length-1; i >= 0; i--) {
+            
+            this.stars[i].posX -= this.moveSpeed;
+            if (this.stars[i].posX < -this.stars[i].width) {
+                this.stars.shift(i,1);
+            } 
+        }
+
         //MOVE PLAYER
         let i = this.jumpers.length;
        
-       
-       
         while (i--) {
             let jumper = this.jumpers[i];
+            //console.log(this.obstacles)
             let obs = this.checkCollision(jumper);
             if (obs) {
-                jumper.crashed = obs.index;
+                jumper.crashed = obs.id;
                 this.crashedJumpers.push(this.jumpers.splice(i, 1)[0]);
             }
             else if (jumper.score < 0) {
@@ -395,68 +355,12 @@ class Game {
 
         }
        
-       
-       
-        // while (i--) {
-        //     let jumper = this.jumpers[i];
-        //     let obs = this.checkCollision(jumper);
-        //     if (obs) {
-        //         jumper.crashed = obs.index;
-        //         this.crashedJumpers.push(this.jumpers.splice(i, 1)[0]);
-        //     } else {
-        //         if (!jumper.falling && !jumper.jumping)jumper.think(this.obstacles, this.stars);
-        //         jumper.checkJump();
-        //         jumper.calculateScore();
-        //         jumper.addLastLandObs(this.obstacles[0])
-        //         if (this.stars.length > 0) this.checkStarCollision(jumper);
-        //     }
-        // }
 
         if (!this.jumpers.length) {
             this.endGame();
         }
 
-
-        //MOVES OBSTACLES TO THE LEFT, REMOVES IF OUT OF SCENE
-    //     for (var o of this.obstacles) {
-    //         o.posX -= this.moveSpeed;
-    //     }
-
-
-    //     for (var o of this.obstacles) {
-    //         o.posX -= this.moveSpeed;
-    //         if (o.posX < -o.width) {
-    //             //if (o.position < -50) {
-    //             this.obstacles.shift(0);
-    //         }
-    //     }
-
-    //    // MOVES STARS TO THE LEFT, REMOVES IF OUT OF SCENE
-    //     for (var s of this.stars) s.posX -= this.moveSpeed;
-            
-
-    //     //MOVES STARS TO THE LEFT, REMOVES IF OUT OF SCENE
-    //     for (var s of this.stars) {
-    //         if (s.posX < -s.width) {
-    //             this.stars.shift(0);
-    //         }
-    //     }
-
-        for (let i = this.obstacles.length-1; i >= 0; i--) {
-                
-            this.obstacles[i].posX -= this.moveSpeed;
-            if (this.obstacles[i].posX < -this.obstacles[i].width) {
-                this.obstacles.shift(i,1);
-            } 
-        }
-
-        for (let i = this.stars.length-1; i >= 0; i--) {
-            
-            this.stars[i].posX -= this.moveSpeed;
-            if (this.stars[i].posX < -this.stars[i].width) {
-                this.stars.shift(i,1);
-            } 
-        }
+      
 
         //ADDS NEW OBSTACLES
         //if (this.obstacles.length < this.minimumTotalObstacles) this.addNewObstacles(5);
@@ -474,17 +378,19 @@ class Game {
 
         const obs = jumper.getNextObstacle(this.obstacles);
 
-        //const obs = this.obstacles[0];
-        const obsLeft = obs.posX;
-        const obsRight = obsLeft + obs.width;
-        const obsBottom = obs.posY;
-        const obsTop = obs.height + obs.posY;
-
-        if (playerLeft < obsRight && playerRight > obsLeft &&
-            playerTop > obsBottom && playerBottom < obsTop) {
-            jumper.lastObstacle = obs.index;
-            return obs;
+        if (obs){
+            const obsLeft = obs.posX;
+            const obsRight = obsLeft + obs.width;
+            const obsBottom = obs.posY;
+            const obsTop = obs.height + obs.posY;
+    
+            if (playerLeft <= obsRight && playerRight >= obsLeft &&
+                playerTop >= obsBottom && playerBottom <= obsTop) {
+                jumper.lastObstacle = obs.id;
+                return obs;
+            }
         }
+       
 
 
         return false;
@@ -574,21 +480,6 @@ class Game {
 }
 
 
-
-
-class Obstacle {
-    constructor(posX, index) {
-        this.posX = posX;
-        this.posY = Math.round(Math.random()) * 60;
-
-
-        this.width = 100;
-        this.height = 100;
-        this.index = index;
-    }
-}
-
-
 class Star {
     constructor(id, posX, posY) {
         this.posX = posX;
@@ -652,7 +543,7 @@ function getRandomInt(min, max) {
             game.jumpers = game.jumpers.splice(0,11)
         }
 
-        if (event.key == "s"){
+        if (event.key == "s" ){
             let jumpers = game.jumpers.splice(0,3);
             let data = [];
             
@@ -664,14 +555,12 @@ function getRandomInt(min, max) {
 
 
             let dataJs = "let best = [];\n\n";
+            
+            dataJs += "nnShape =  [ " + nnShape.toString() + " ];\n\n";
 
             exportBest.blackBox.map(j => {dataJs+=`best.push(${j.brain.serialize()});\n` })
-
-            //console.log(maxFiltered)
-
             
             download(dataJs, `best_${exportBest.topScore}.js`, "text")
-
 
         }
     });

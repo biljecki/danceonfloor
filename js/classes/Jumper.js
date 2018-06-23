@@ -11,7 +11,7 @@ class Player {
             this.brain = egg.brain;
             this.category = egg.category;
         } else {
-            this.brain = new NeuralNetwork(4, 10, 10, 3);
+            this.brain = new NeuralNetwork(...nnShape);
             this.category = "";
         }
 
@@ -97,12 +97,11 @@ class Player {
 
         if ( output[0]/total > 0.33 || output[1]/total > 0.33 ) this.startJump();
             
-
     }
    
     generateHTML() {
         let { id, score, width, height, posX, currentJumpHeight, category, collectedStarsIndexes , parentIndex} = this;
-        if (score >= 75) category = "white";
+        //if (score >= 75) category = "white";
         //if (color == "cyan") console.log("generate", this, parentIndex)
         var html = `<div id="jumper${id}" class="jumper ${category}" style="
             width:${width}px;
@@ -111,7 +110,7 @@ class Player {
             bottom:${currentJumpHeight}px;
             ">
             ${score}<br/> 
-            ${this.numberOfJumps}||${this.collectedStarsIndexes.length}
+            ${this.numberOfJumps} || ${this.collectedStarsIndexes.length}
 
             </div>`;
         return html;
@@ -131,6 +130,7 @@ class Player {
         //if (lastObstacle > 1) this.score +=2;
 
         //this.score *=10;
+        if (!this.crashed) this.score +=3
 
         return this.score;
 
@@ -139,10 +139,11 @@ class Player {
 
     getNextObstacle(obstacles) {
         for (let i = 0; i < obstacles.length; i++) {
-            if (this.posX < obstacles[i].posX + obstacles[i].width - 5) {
+            if (this.posX < obstacles[i].posX + obstacles[i].width) {
                 return obstacles[i];
             }
         }
+        return false;
     }
 
     addLastLandObs(obstacles) {

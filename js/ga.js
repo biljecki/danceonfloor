@@ -9,7 +9,7 @@ function evolveBrains(allJumpers){
 
 
     let blackBoxCount = 10;
-    let mutateCount = 120;
+    let mutateCount = 330;
 
     if (!filtered.length) return false;
 
@@ -19,9 +19,9 @@ function evolveBrains(allJumpers){
 
     exportBest = { blackBox, topScore };
    
-    const mutated_2 = evolve(filtered, mutateCount, 2, "mutate2");
-    const mutated_5 = evolve(filtered, mutateCount, 5, "mutate5");
-    const mutated_10 = evolve(filtered, mutateCount, 10, "mutate10");
+    const mutated_2 = evolve(filtered, mutateCount, 1, "mutate2");
+    const mutated_5 = evolve(filtered, mutateCount, 3, "mutate5");
+    const mutated_10 = evolve(filtered, mutateCount, 7, "mutate10");
 
     //const bred = breed(filtered, 100)
     
